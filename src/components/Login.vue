@@ -11,7 +11,7 @@
 						]">
 						<el-input v-model="form.username" placeholder="用户名(4-10位)"></el-input>
 					</el-form-item>
-					<el-form-item prop="password" 
+					<el-form-item prop="password"
 					:rules="[
 						{required:true,message:'请输入你的密码' ,trigger:'blur'},
 						{min:6,max:12,message:'长度6-12',trigger:'blur'}
@@ -19,6 +19,7 @@
 						<el-input v-model="form.password" type="password" placeholder="密码(6-12位)"></el-input>
 					</el-form-item>
 			        <el-form-item >
+<!--			          <el-button type="primary" @click="goIn">Login</el-button>-->
 			          <el-button type="primary" @click="login('form')">Login</el-button>
 			        </el-form-item>
 			      </el-form>
@@ -27,15 +28,17 @@
 </template>
 
 <script>
+	import { login } from '@/api/api.js'
+	import { setToken } from '@/utils/setToken.js'
 	export default{
 		data(){
 			const validateName = (rule,value,callback)=>{
-				
+
 			}
 			return {
 				form:{
 					username:'',
-					password:'', 
+					password:'',
 				},
 				rules:{
 					username:[],
@@ -44,21 +47,34 @@
 			};
 		},
 		methods:{
+			// goIn(){
+			// 	this.$router.push('./home')
+			// },
 					login(form){
 						this.$refs[form].validate((valid) => {
 							if(valid){
 								console.log(this.form);
-								this.axios.post('https://rapserver.sunmi.com/app/mock/340/login',this.form)
-								.then(res =>{
-									console.log(res)
-									if(res.data.status === 200){
-										localStorage.setItem('username',res.data.username)
-										this.$message({message: res.data.message,type: 'success'})
-										this.$router.push('./home')
-									}
+								//把这个登录方法封装成api调用
+								// this.service.post('/login',this.form)
+								// .then(res=>{
+								// 	if(res.data.status === 200){
+								// 		setToken('username',res.data.username)
+								// 		setToken('token',res.data.token)
+								// 		this.$message({message:res.data.message,type:'success'})
+								// 		this.$router.push('/home')
+								// 	}
+								// })
+								login(this.form).then(res=>{
+									this.service.post('/login',this.form)
+									.then(res=>{
+										if(res.data.status === 200){
+											setToken('username',res.data.username)
+											setToken('token',res.data.token)
+											this.$message({message:res.data.message,type:'success'})
+											this.$router.push('/home')
+										}
+									})
 								})
-								.catch(err =>{
-								console.error(err)})
 							}else{
 								alert('傻逼你没注册！');
 							}
@@ -71,12 +87,12 @@
 <style lang="less">
 	*{
 		margin: 0;
-		padding: 0; 
+		padding: 0;
 		body{
 			/* 100%窗口高度 */
 			height: 100vh;
 			/* 弹性布局 居中 */
-			
+
 			justify-content: center;
 			ael-lign-items: center;
 			/* 渐变背景 */
@@ -92,7 +108,6 @@
 			    background-color: #fff;
 			    border-radius: 15px;
 			    /* 弹性布局 垂直排列 */
-			    
 			    flex-direction: column;
 			    ael-lign-items: center;
 			    width: 350px;
@@ -128,6 +143,6 @@
 				}
 			}
 		}
-		
+
 	}
 </style>

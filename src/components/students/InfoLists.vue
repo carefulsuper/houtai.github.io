@@ -95,7 +95,7 @@ export default {
       dialogFormVisible: false,
       form: {
         name: "",
-        sex: "1",
+        sex: "",
         age: "",
         father: "",
         mather: "",
@@ -149,6 +149,7 @@ export default {
       this.dialogFormVisible = true
     },
     sure(form) {
+        console.log(form,this.form)
       this.$refs[form].validate(valid => {
         if (valid) {
           /* if(this.state) {

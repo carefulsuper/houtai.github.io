@@ -160,7 +160,7 @@ export default {
       this.dialogFormVisible = true
     },
     getData() {
-      getInfo().then(res => {
+      getInfo() .then(res => {
         if(res.data.status === 200) {
           this.tableData = res.data.data
           this.total = res.data.total
@@ -184,6 +184,7 @@ export default {
               if(res.data.status === 200) {
                 this.getData()
                 this.dialogFormVisible = false
+                this.$refs[form].resetFields()
                 this.$message({type: 'success', message: res.data.message})
               }
             })

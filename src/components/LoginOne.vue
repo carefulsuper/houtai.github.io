@@ -12,7 +12,7 @@
 						]">
 						<el-input v-model="form.username"></el-input>
 					</el-form-item>
-						
+
 					<el-form-item label="密码"  prop="password" :rules="[
 						{required:true,message:'请输入你的密码' ,trigger:'blur'},
 						{min:6,max:12,message:'长度6-12',trigger:'blur'}
@@ -20,7 +20,8 @@
 						<el-input v-model="form.password"></el-input>
 					</el-form-item>
 			        <el-form-item >
-			          <el-button type="primary" @click="login('form')">Login</el-button>
+<!--			          <el-button type="primary" @click="login('form')">Login</el-button>-->
+								<el-button type="primary" @click="goIn">Login</el-button>
 			        </el-form-item>
 			      </el-form>
 			  </el-card>
@@ -38,26 +39,29 @@
 			};
 		},
 		methods:{
-			login(form){
-				this.$refs[form].validate((valid) => {
-					if(valid){
-						console.log(this.form);
-						this.axios.post('https://rapserver.sunmi.com/app/mock/340/login',this.form)
-						.then(res =>{
-							console.log(res)
-							if(res.data.status === 200){
-								localStorage.setItem('username',res.data.username)
-								this.$message({message: res.data.message,type: 'success'})
-								this.$router.push('./home')
-							}
-						})
-						.catch(err =>{
-						console.error(err)})
-					}else{
-						alert('傻逼你没注册！');
-					}
-				})
-			}
+			goIn(){
+				this.$router.push('/home')
+			},
+			// login(form){
+			// 	this.$refs[form].validate((valid) => {
+			// 		if(valid){
+			// 			console.log(this.form);
+			// 			this.axios.post('https://rapserver.sunmi.com/app/mock/340/login',this.form)
+			// 			.then(res =>{
+			// 				console.log(res)
+			// 				if(res.data.status === 200){
+			// 					localStorage.setItem('username',res.data.username)
+			// 					this.$message({message: res.data.message,type: 'success'})
+			// 					this.$router.push('./home')
+			// 				}
+			// 			})
+			// 			.catch(err =>{
+			// 			console.error(err)})
+			// 		}else{
+			// 			alert('傻逼你没注册！');
+			// 		}
+			// 	})
+			// }
 		}
 	};
 </script>
@@ -69,7 +73,7 @@
 		.box-card{
 			 width: 400px;
 			 height: 300px;
-			
+
 			 top: 0;
 			 left: 0;
 			 bottom: 0;
